@@ -1,0 +1,33 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.{js,ts,jsx,tsx}"
+      run: npx eslint {staged_files}
+
+commit-msg:
+  commands:
+    commitlint:
+      run: |
+        if ! npx commitlint --edit --verbose; then
+          echo ""
+          echo "════════════════════════════════════════════════════════════════"
+          echo "❌ COMMIT REJECTED - Invalid Format"
+          echo "════════════════════════════════════════════════════════════════"
+          echo ""
+          echo "✅ Required format:"
+          echo "   type(scope?): subject"
+          echo ""
+          echo "📝 Examples:"
+          echo "   ✓ feat: add dark mode toggle"
+          echo "   ✓ fix(popup): resolve settings save issue"
+          echo "   ✓ docs: update installation guide"
+          echo "   ✓ chore: init project"
+          echo ""
+          echo "🏷️  Valid types:"
+          echo "   feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert"
+          echo ""
+          echo "💡 Your commit message: '$(cat $1)'"
+          echo "════════════════════════════════════════════════════════════════"
+          exit 1
+        fi
