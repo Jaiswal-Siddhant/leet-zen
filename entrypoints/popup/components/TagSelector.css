@@ -1,0 +1,78 @@
+.tag-selector {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Box */
+.dropdown-box {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: black;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arrow {
+    font-size: 12px;
+}
+
+/* Menu */
+.dropdown-menu {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: black;
+    margin-top: 3rem;
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+}
+
+.dropdown-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dropdown-item:hover {
+    background: #f3f3f3;
+    color: black;
+}
+
+.dropdown-item.selected {
+    background: #5a5dfc;
+    color: white;
+}
+
+/* Chips */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chip {
+    padding: 6px;
+    padding-right: 0;
+    background: #5a5dfc;
+    color: white;
+    border-radius: 8px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chip-remove {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}

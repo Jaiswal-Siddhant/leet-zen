@@ -9,10 +9,10 @@ Hide solution tabs, discussions, difficulty labels, and enable a focused workspa
 - ✔️ Hide Editorial tab  
 - ✔️ Hide Discussions tab  
 - ✔️ Hide Difficulty labels  
+- ✔️ Get Random Question to blind test your mettle
+- ✔️ Filter Random Question with difficulty and tags
 - ✔️ Sync settings via browser storage  
 - ✔️ React-based Options page  
-<!-- - ✔️ Random LeetCode question generator   -->
-<!-- - ✔️ Architecture designed for adding new blockers easily   -->
 
 Each feature (Solutions/Editorial/Discussions/Difficulty) is implemented using the **Strategy pattern**, making it easy to add or modify blockers without touching core logic.
 

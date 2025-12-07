@@ -1,0 +1,21 @@
+export const QUESTION_LIST_QUERY = `
+  query problemsetQuestionList(
+    $categorySlug: String, 
+    $limit: Int, 
+    $skip: Int, 
+    $filters: QuestionListFilterInput
+  ) {
+    problemsetQuestionList: questionList(
+      categorySlug: $categorySlug
+      limit: $limit
+      skip: $skip
+      filters: $filters
+    ) {
+      total: totalNum
+      questions: data {
+        titleSlug
+        difficulty
+      }
+    }
+  }
+`;
