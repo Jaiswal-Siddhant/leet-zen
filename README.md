@@ -3,6 +3,20 @@
 LeetZen is a browser extension that brings a distraction-free experience to LeetCode.  
 Hide solution tabs, discussions, difficulty labels, and enable a focused workspace — all configurable from an intuitive settings UI built with React.
 
+## 📸 Extension Preview
+
+### 🔧 Options Page (Settings UI)
+> _Customize what to hide, choose difficulty filters, manage tag selectors, and configure random problem generation._
+  
+![LeetZen Options Page](./docs/images/1.jpeg)
+> 
+![LeetZen Options Page](./docs/images/2.jpeg)
+
+### 🎯 Random Problem Panel  
+> _Generate a random LeetCode problem — optionally filtered by difficulty and tags._
+
+![Random Problem Panel](./docs/images/3.jpeg)
+
 ## 🚀 Features
 
 - ✔️ Hide Solutions tab  
