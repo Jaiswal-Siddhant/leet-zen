@@ -27,4 +27,3 @@
 
 ### Fixed 
 - Fixed Firefox extension manifest missing `data_collection_permissions`. 
- 
