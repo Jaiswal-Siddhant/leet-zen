@@ -3,7 +3,7 @@ import { defineConfig } from 'wxt';
 export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
-    version: "0.0.2",
+    version: "0.0.3",
     author: {
       email: "jaiswalsiddhant2001@gmail.com",
     },
