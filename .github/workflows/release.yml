@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
     tags:
       - 'v*'
 
@@ -20,12 +21,16 @@ jobs:
 
       - run: yarn install
 
-      - run: yarn build
+      - name: Zip chrome extension
+        run: |
+          OUTPUT=$(yarn zip 2>&1)
+          echo "$OUTPUT"
 
-      - run: yarn zip
+      - name: Find zip
+        run: find . -name '*.zip' | sort
 
       - name: Stage chrome zip
-        run: mkdir -p dist && cp .output/*.zip dist/leet-zen-chrome.zip
+        run: mkdir -p dist && find . -name '*.zip' ! -name '*sources*' -exec cp {} dist/leet-zen-chrome.zip \;
 
       - uses: actions/upload-artifact@v4
         with:
@@ -44,12 +49,16 @@ jobs:
 
       - run: yarn install
 
-      - run: yarn build:firefox
+      - name: Zip firefox extension
+        run: |
+          OUTPUT=$(yarn zip:firefox 2>&1)
+          echo "$OUTPUT"
 
-      - run: yarn zip:firefox
+      - name: Find zip
+        run: find . -name '*.zip' | sort
 
       - name: Stage firefox zip
-        run: mkdir -p dist && cp .output/*.zip dist/leet-zen-firefox.zip
+        run: mkdir -p dist && find . -name '*.zip' ! -name '*sources*' -exec cp {} dist/leet-zen-firefox.zip \;
 
       - uses: actions/upload-artifact@v4
         with:
