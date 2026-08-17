@@ -1,3 +1,4 @@
+import { Options } from './OptionsStateMachine';
 
 export interface Settings {
     blockSolutions: boolean;
@@ -9,7 +10,9 @@ export interface Settings {
 
 export interface SettingsState {
     settings: Settings;
+    customTags: Options[];
     setSetting: (key: keyof Settings, value: boolean) => void;
     setMultipleSettings: (newSettings: Partial<Settings>) => void;
+    addCustomTag: (tag: Options) => void;
     loadSettings: () => void;
 }

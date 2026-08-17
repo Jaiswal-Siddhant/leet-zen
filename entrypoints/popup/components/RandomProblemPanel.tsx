@@ -1,5 +1,6 @@
 import { DIFFICULTY_OPTIONS } from '../constants/OPTIONS';
 import { getRandomLeetCodeQuestion } from '../services/leetcode/randomQuestion';
+import { useSettingsStore } from '../store/settingsStore';
 import '../styles/RandomProblemPanel.css';
 import TagSelector from './TagSelector';
 
@@ -7,6 +8,9 @@ export default function RandomProblemPanel() {
 	const [tags, setTags] = useState<string[]>([]);
 	const [difficulty, setDifficulty] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
+
+	const customTags = useSettingsStore((s) => s.customTags);
+	const addCustomTag = useSettingsStore((s) => s.addCustomTag);
 
 	const handleSubmit = async () => {
 		try {
@@ -58,7 +62,12 @@ export default function RandomProblemPanel() {
 
 			<div className='random-section'>
 				<label className='label'>Tags</label>
-				<TagSelector selectedTags={tags} onChange={setTags} />
+				<TagSelector
+					selectedTags={tags}
+					onChange={setTags}
+					customTags={customTags}
+					onAddCustomTag={addCustomTag}
+				/>
 			</div>
 
 			<button className='generate-btn' onClick={handleSubmit}>
