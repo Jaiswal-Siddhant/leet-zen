@@ -9,6 +9,8 @@ export const useSettingsStore = create<SettingsState>((set) => ({
 		hideDifficulty: false,
 	},
 
+	customTags: [],
+
 	setSetting: (key, value) =>
 		set((state) => {
 			const updated = { ...state.settings, [key]: value };
@@ -23,10 +25,21 @@ export const useSettingsStore = create<SettingsState>((set) => ({
 			settings: { ...state.settings, ...newSettings },
 		})),
 
+	addCustomTag: (tag) =>
+		set((state) => {
+			if (state.customTags.some((t) => t.value === tag.value)) return state;
+			const updated = [...state.customTags, tag];
+			browser.storage.local.set({ customTags: updated });
+			return { customTags: updated };
+		}),
+
 	loadSettings: async () => {
-		const data = await browser.storage.local.get('settings');
+		const data = await browser.storage.local.get(['settings', 'customTags']);
 		if (data.settings) {
 			set({ settings: data.settings });
+		}
+		if (data.customTags) {
+			set({ customTags: data.customTags });
 		}
 	},
 }));

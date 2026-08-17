@@ -1,14 +1,18 @@
 import { leetcodeApi } from "./leetcodeApi";
 import { QUESTION_LIST_QUERY } from "../../constants";
 
+const DIFFICULTIES = ['EASY', 'MEDIUM', 'HARD'];
+
 export async function getRandomLeetCodeQuestion(tags: string[], difficulty: string) {
+    const resolvedDifficulty = difficulty || DIFFICULTIES[Math.floor(Math.random() * DIFFICULTIES.length)];
+
     const variables = {
         categorySlug: "",
         skip: 0,
         limit: 1000,
         filters: {
             tags,
-            difficulty
+            difficulty: resolvedDifficulty,
         }
     };
 

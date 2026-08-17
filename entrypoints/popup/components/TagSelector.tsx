@@ -1,28 +1,63 @@
-import { useState } from 'react';
 import './TagSelector.css';
 import { ALL_TAGS } from '../constants/OPTIONS';
+import { Options } from '../types/OptionsStateMachine';
+
+function slugToDisplayName(slug: string): string {
+	return slug
+		.split('-')
+		.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+		.join(' ');
+}
 
 export default function TagSelector({
 	selectedTags,
 	onChange,
+	customTags,
+	onAddCustomTag,
 }: {
 	selectedTags: string[];
 	onChange: (tags: string[]) => void;
+	customTags: Options[];
+	onAddCustomTag: (tag: Options) => void;
 }) {
 	const [isOpen, setIsOpen] = useState(false);
+	const [search, setSearch] = useState('');
+	const [customInput, setCustomInput] = useState('');
 
-	function toggle(tag: string) {
-		if (selectedTags.includes(tag)) {
-			onChange(selectedTags.filter((t) => t !== tag));
+	const allTags = [...ALL_TAGS, ...customTags];
+
+	const filteredTags = allTags.filter(
+		(tag) =>
+			tag.key.toLowerCase().includes(search.toLowerCase()) ||
+			tag.value.toLowerCase().includes(search.toLowerCase())
+	);
+
+	function toggle(tagValue: string) {
+		if (selectedTags.includes(tagValue)) {
+			onChange(selectedTags.filter((t) => t !== tagValue));
 		} else {
-			onChange([...selectedTags, tag]);
-			setIsOpen(false);
+			onChange([...selectedTags, tagValue]);
+			if (search) setSearch('');
 		}
+	}
+
+	function addCustomTag() {
+		const slug = customInput.trim().toLowerCase().replace(/\s+/g, '-');
+		if (!slug) return;
+		const tag: Options = { key: slugToDisplayName(slug), value: slug };
+		onAddCustomTag(tag);
+		if (!selectedTags.includes(slug)) {
+			onChange([...selectedTags, slug]);
+		}
+		setCustomInput('');
+	}
+
+	function getDisplayName(value: string): string {
+		return allTags.find((t) => t.value === value)?.key ?? slugToDisplayName(value);
 	}
 
 	return (
 		<div className='tag-selector'>
-			{/* Dropdown Menu */}
 			<div
 				className='dropdown-box'
 				onClick={() => setIsOpen((prev) => !prev)}>
@@ -30,29 +65,56 @@ export default function TagSelector({
 				<span className='arrow'>{isOpen ? '▲' : '▼'}</span>
 			</div>
 
-			{/* Dropdown Menu */}
 			{isOpen && (
 				<div className='dropdown-menu'>
-					{ALL_TAGS.map((tag) => (
+					<div className='search-wrapper'>
+						<input
+							className='tag-search'
+							type='text'
+							placeholder='Search tags...'
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+							onClick={(e) => e.stopPropagation()}
+							autoFocus
+						/>
+					</div>
+
+					{filteredTags.map((tag) => (
 						<div
 							key={tag.value}
 							className={`dropdown-item ${
-								selectedTags.includes(tag.value)
-									? 'selected'
-									: ''
+								selectedTags.includes(tag.value) ? 'selected' : ''
 							}`}
 							onClick={() => toggle(tag.value)}>
 							{tag.key}
 						</div>
 					))}
+
+					{filteredTags.length === 0 && (
+						<div className='no-results'>No matching tags</div>
+					)}
+
+					<div className='custom-tag-row'>
+						<input
+							className='custom-tag-input'
+							type='text'
+							placeholder='Add custom tag slug...'
+							value={customInput}
+							onChange={(e) => setCustomInput(e.target.value)}
+							onClick={(e) => e.stopPropagation()}
+							onKeyDown={(e) => e.key === 'Enter' && addCustomTag()}
+						/>
+						<button className='custom-tag-add' onClick={addCustomTag}>
+							+
+						</button>
+					</div>
 				</div>
 			)}
 
-			{/* Selected Chips */}
 			<div className='chips'>
 				{selectedTags.map((tag) => (
 					<div key={tag} className='chip'>
-						{tag}
+						{getDisplayName(tag)}
 						<button
 							className='chip-remove'
 							onClick={() =>
