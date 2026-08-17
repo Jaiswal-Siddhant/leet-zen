@@ -24,10 +24,13 @@ jobs:
 
       - run: yarn zip
 
+      - name: Stage chrome zip
+        run: mkdir -p dist && cp .output/*.zip dist/leet-zen-chrome.zip
+
       - uses: actions/upload-artifact@v4
         with:
           name: chrome-zip
-          path: .output/*.zip
+          path: dist/
 
   build-firefox:
     runs-on: ubuntu-latest
@@ -45,10 +48,13 @@ jobs:
 
       - run: yarn zip:firefox
 
+      - name: Stage firefox zip
+        run: mkdir -p dist && cp .output/*.zip dist/leet-zen-firefox.zip
+
       - uses: actions/upload-artifact@v4
         with:
           name: firefox-zip
-          path: .output/*.zip
+          path: dist/
 
   release:
     needs: [build-chrome, build-firefox]
