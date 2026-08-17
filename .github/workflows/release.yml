@@ -1,0 +1,66 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-chrome:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chrome-zip
+          path: .output/*.zip
+
+  build-firefox:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - run: yarn install --frozen-lockfile
+
+      - run: yarn zip:firefox
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firefox-zip
+          path: .output/*.zip
+
+  release:
+    needs: [build-chrome, build-firefox]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: chrome-zip
+          path: dist
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: firefox-zip
+          path: dist
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
