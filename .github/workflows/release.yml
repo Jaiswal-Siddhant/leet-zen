@@ -81,13 +81,13 @@ jobs:
           VERSION=$(node -e "console.log(require('./package.json').version)")
           echo "Extension version: $VERSION"
           
-          # Find the chrome zip file
-          CHROME_ZIP=$(find . -maxdepth 2 -name "*chrome*$VERSION*.zip" ! -name "*sources*" | head -1)
+          # Find the chrome zip file (WXT names it: leet-zen-VERSION-chrome.zip)
+          CHROME_ZIP=$(find ./.output -maxdepth 1 -name "leet-zen-$VERSION-chrome.zip" 2>/dev/null | head -1)
           
           if [ -z "$CHROME_ZIP" ]; then
             echo "✗ Error: Chrome zip not found for version $VERSION!"
-            echo "Available zips:"
-            find . -name '*.zip' -type f
+            echo "Available zips in .output:"
+            find ./.output -name '*.zip' -type f 2>/dev/null || echo "No .output directory"
             exit 1
           fi
           
@@ -130,13 +130,13 @@ jobs:
           VERSION=$(node -e "console.log(require('./package.json').version)")
           echo "Extension version: $VERSION"
           
-          # Find the firefox zip file
-          FIREFOX_ZIP=$(find . -maxdepth 2 -name "*firefox*$VERSION*.zip" ! -name "*sources*" | head -1)
+          # Find the firefox zip file (WXT names it: leet-zen-VERSION-firefox.zip)
+          FIREFOX_ZIP=$(find ./.output -maxdepth 1 -name "leet-zen-$VERSION-firefox.zip" 2>/dev/null | head -1)
           
           if [ -z "$FIREFOX_ZIP" ]; then
             echo "✗ Error: Firefox zip not found for version $VERSION!"
-            echo "Available zips:"
-            find . -name '*.zip' -type f
+            echo "Available zips in .output:"
+            find ./.output -name '*.zip' -type f 2>/dev/null || echo "No .output directory"
             exit 1
           fi
           
